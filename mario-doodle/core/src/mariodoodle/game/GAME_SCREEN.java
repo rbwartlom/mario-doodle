@@ -30,16 +30,25 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     @Override
     public void show() {
-        player = new PLAYER("badlogic.jpg");
+        player = new PLAYER(player_image_source);
         platforms = new LinkedList<PLATFORM>();
 
+        int screenHeight = 0;
+        for(int i = 20; i < screenHeight; i += 100)
+        {
 
+        }
     }
 
     public void update(float delta)
     {
-        int mouseX = Gdx.input.getX();
-        player.update(mouseX);
+        player.updateX(Gdx.input.getX());
+        for (int i = 0; i < platforms.size(); i++)
+        {
+
+        }
+
+
         //calculate gravity in player
         //move player from position of mouse
     }
@@ -49,7 +58,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.begin();
 
-        game.batch.draw(player.getTexture(), player.getX(), 20);
+        game.batch.draw(player.getTexture(), player.getX(), player.getY());
         /* for (int i = 0; i < platforms.size(); i++)
         {
             PLATFORM currentPlatform = platforms.get(i);

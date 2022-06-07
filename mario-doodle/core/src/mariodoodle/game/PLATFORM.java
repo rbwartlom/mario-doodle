@@ -1,12 +1,13 @@
 package mariodoodle.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.awt.*;
 
-public class PLATFORM {
+public class PLATFORM extends Actor {
 
-    private int posX, posY;
+    private float posX, posY;
     private int power;
     private Texture image;
 
@@ -29,11 +30,11 @@ public class PLATFORM {
     {
         return image;
     }
-    public int getX()
+    public float getX()
     {
         return posX;
     }
-    public int getY()
+    public float getY()
     {
         return posY;
     }

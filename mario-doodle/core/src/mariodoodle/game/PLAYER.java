@@ -2,9 +2,10 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class PLAYER {
-    int posX, posY;
+public class PLAYER extends Actor {
+    float posX, posY;
     int acceleration;
 
     private Texture image;
@@ -20,12 +21,18 @@ public class PLAYER {
         //if x, y is the same return true else return false
         return false;
     }
+
+    public boolean isTouching()
+    {
+        return false;
+    }
+
     //called when player touches platform
     public void boost(int force)
     {
 
     }
-    public void update(int mouseX)
+    public void updateX(int mouseX)
     {
         posX = mouseX;
     }
@@ -35,16 +42,16 @@ public class PLAYER {
         image.dispose();
     }
 
+    //getter methods
     public Texture getTexture()
     {
         return image;
     }
-
-    public int getX()
+    public float getX()
     {
         return posX;
     }
-    public int getY()
+    public float getY()
     {
         return posY;
     }

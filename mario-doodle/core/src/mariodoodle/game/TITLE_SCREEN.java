@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -34,6 +35,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
         Gdx.input.setInputProcessor(stage);
         container = new Table();
 
+        luigiImageSource = "media/luigi.png";
         marioImageSource = "media/mario.png";
         playerImageSource = marioImageSource;
     }
@@ -42,6 +44,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
     {
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
+        //adding the start button
         startButton = new TextButton("Start", skin );
         //looks for left click on button and then opens a new game screen
         startButton.addListener(new ClickListener(){
@@ -51,18 +54,36 @@ public class TITLE_SCREEN extends ScreenAdapter{
             }
         });
         container.add(startButton);
+        startButton.center();
         container.row();
 
-        final Texture marioTexture = new Texture(marioImageSource);
-        marioButton = new ImageButton(new TextureRegionDrawable(marioTexture));
+        //adding the mario button
+        marioButton = new ImageButton(new TextureRegionDrawable(new Texture(marioImageSource)));
+        marioButton.setChecked(true);
         marioButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
                 marioButton.setChecked(true);
+                luigiButton.setChecked(false);
                 playerImageSource = marioImageSource;
+
             }
         });
         container.add(marioButton);
+
+        //adding the luigi button
+        luigiButton = new ImageButton(new TextureRegionDrawable(new Texture(luigiImageSource)));
+        luigiButton.setChecked(true);
+        luigiButton.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y)
+            {
+                luigiButton.setChecked(true);
+                marioButton.setChecked(false);
+                playerImageSource = luigiImageSource;
+
+            }
+        });
+        container.add(luigiButton);
 
 
         container.setFillParent(true); //centers the button(s)
@@ -78,7 +99,8 @@ public class TITLE_SCREEN extends ScreenAdapter{
     {
     }
 
-    public void hide(){
+    public void hide()
+    {
 
     }
 
