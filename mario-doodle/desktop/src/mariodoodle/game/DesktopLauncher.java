@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.setWindowedMode(1280,720);
 		config.setForegroundFPS(60);
 		config.setTitle("mario-doodle");
+		config.setResizable(false);
 		new Lwjgl3Application(new MD_GAME(), config);
 	}
 }

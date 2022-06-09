@@ -10,6 +10,7 @@ public class END_SCREEN extends ScreenAdapter {
 
     private MD_GAME game;
     private Stage stage;
+    Skin skin;
 
     private TextButton playAgainButton;
     private TextButton menuButton;
@@ -23,22 +24,23 @@ public class END_SCREEN extends ScreenAdapter {
 
     public void show()
     {
-        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
     }
 
     public void render(float delta) {
         update(delta);
-
+        stage.addActor(new TextButton("start", skin));
+        stage.draw();
 
     }
     public void update (float delta)
     {
+
     }
 
     public void hide(){
-
+        stage.dispose();
     }
 
 }

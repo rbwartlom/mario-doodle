@@ -1,11 +1,8 @@
 package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -33,6 +30,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
         container = new Table();
 
         luigiImageSource = "media/luigi.png";
@@ -66,7 +64,6 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 marioButton.setChecked(true);
                 luigiButton.setChecked(false);
                 playerImageSource = marioImageSource;
-
             }
         });
         container.add(marioButton);
@@ -80,7 +77,6 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 luigiButton.setChecked(true);
                 marioButton.setChecked(false);
                 playerImageSource = luigiImageSource;
-
             }
         });
         container.add(luigiButton);
@@ -93,15 +89,15 @@ public class TITLE_SCREEN extends ScreenAdapter{
         update(delta);
         stage.addActor(container);
         stage.draw();
-
     }
     public void update (float delta)
     {
+
     }
 
     public void hide()
     {
-
+        stage.dispose();
     }
 
 }

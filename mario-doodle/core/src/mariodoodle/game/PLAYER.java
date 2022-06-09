@@ -1,58 +1,57 @@
 package mariodoodle.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class PLAYER extends Actor {
-    float posX, posY;
-    int acceleration;
+import javax.swing.*;
 
-    private Texture image;
+public class PLAYER extends Image {
 
-    PLAYER(String imageSource)
-    {
-        image = new Texture(imageSource);
-        posY = 100;
+
+
+    float acceleration;
+
+
+    PLAYER(String imageSource) {
+        super(new Texture(imageSource));
+        this.setY(700);
+        acceleration = 1;
     }
 
-    public boolean checkPlatformTouch(PLATFORM platform)
+    public void act(float delta)
     {
-        //if x, y is the same return true else return false
+        float newY = this.getY() - acceleration*delta;
+        acceleration += delta*1200;
+        this.setY(newY);
+
+        //update the x value, calculate gravity
+    }
+
+    public boolean checkPlatformTouch(PLATFORM platform) {
         return false;
     }
-
-    public boolean isTouching()
-    {
+    public boolean isTouching() {
         return false;
     }
 
     //called when player touches platform
-    public void boost(int force)
-    {
+    public void boost(int force) {
 
     }
-    public void updateX(int mouseX)
-    {
-        posX = mouseX;
-    }
 
-    public void dispose()
-    {
-        image.dispose();
+    public void dispose() {
+
     }
 
     //getter methods
-    public Texture getTexture()
-    {
-        return image;
+    /*
+    public Sprite getSprite() {
+        return sprite;
     }
-    public float getX()
-    {
-        return posX;
-    }
-    public float getY()
-    {
-        return posY;
-    }
+    */
 }

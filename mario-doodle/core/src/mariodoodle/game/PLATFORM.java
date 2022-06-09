@@ -1,31 +1,46 @@
 package mariodoodle.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import java.util.Random;
 
-import java.awt.*;
+public class PLATFORM extends Image {
 
-public class PLATFORM extends Actor {
-
-    private float posX, posY;
+    private final Texture texture = new Texture("media/mario.png");
     private int power;
-    private Texture image;
 
-    PLATFORM()
+
+    PLATFORM(float posY)
     {
-        generate();
+        super(new Texture("media/mushroom.png"));
+
+        generate(posY);
     }
 
-    public void generate()
+    public void act(float delta)
     {
-        //add random x,y
-        //randomly select if booster
+    }
+    public void generate(float posY)
+    {
+        this.setY(posY);
+
+        Random rand = new Random();
+        float posX = rand.nextFloat();
+        posX *= Gdx.graphics.getWidth();
+        this.setX(posX);
+
+        this.power = rand.nextInt(1, 10);
     }
 
     public int getPower()
     {
         return power;
     }
+
+
+    /*
     public Texture getImage()
     {
         return image;
@@ -38,5 +53,6 @@ public class PLATFORM extends Actor {
     {
         return posY;
     }
+    */
 
 }
