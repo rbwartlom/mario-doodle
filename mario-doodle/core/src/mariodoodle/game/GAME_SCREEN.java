@@ -54,21 +54,9 @@ public class GAME_SCREEN extends ScreenAdapter {
         float posYold = player.getY();
         stage.act();
 
-        float posYnew = player.getY();
-        for (int i = 0; i < platforms.size(); i++)
-        {
-            PLATFORM currentPlatform = platforms.get(i);
-            float platformY = currentPlatform.getY();
-            if(platformY >= posYnew && platformY <= posYold)
-            {
-                //if player bounds and platform bounds are touching
-                if(player.getBounds().overlaps(currentPlatform.getBounds()))
-                {
-                    System.out.println("touched");
-                }
+        checkCollision(posYold);
 
-            }
-        }
+
         //(check if player is touching and boost)
         //get old posY before act done
         //loop through platforms done
@@ -82,12 +70,6 @@ public class GAME_SCREEN extends ScreenAdapter {
             //check if any platform is lower than 20% (maybe also only lowest plat)
                 //if yes delete it & add new platform to the top
 
-
-
-
-
-
-
         //detects if player reached bottom of screen
         if(player.getY() <= 0)
         {
@@ -98,6 +80,25 @@ public class GAME_SCREEN extends ScreenAdapter {
         //move player from position of mouse
     }
 
+    public boolean checkCollision (float posYold)
+    {
+        float posYnew = player.getY();
+        for (int i = 0; i < platforms.size(); i++)
+        {
+            PLATFORM currentPlatform = platforms.get(i);
+            float platformY = currentPlatform.getY();
+            if(platformY >= posYnew && platformY <= posYold)
+            {
+                //if player bounds and platform bounds are touching
+                if(player.getBounds().overlaps(currentPlatform.getBounds()))
+                {
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
     public void render(float delta) {
         update(delta);
 
