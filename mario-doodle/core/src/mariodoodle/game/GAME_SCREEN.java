@@ -50,9 +50,31 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     public void update(float delta)
     {
-        player.setX(Gdx.input.getX() - player.getWidth()/2);
+        player.setXPos(Gdx.input.getX() - player.getWidth()/2);
+        float posYold = player.getY();
         stage.act();
-        System.out.println(player.getY());
+
+        float posYnew = player.getY();
+        for (int i = 0; i < platforms.size(); i++)
+        {
+            PLATFORM currentPlatform = platforms.get(i);
+            float platformY = currentPlatform.getY();
+            if(platformY >= posYnew && platformY <= posYold)
+            {
+                //if player bounds and platform bounds are touching
+                if(player.getBounds().overlaps(currentPlatform.getBounds()))
+                {
+                    System.out.println("touched");
+                }
+
+            }
+        }
+        //(check if player is touching and boost)
+        //get old posY before act done
+        //loop through platforms done
+        //check if it's y is in player range
+        //if yes check if platform x is touching player
+        //if yes boost player buy platform power
 
         //if player position is higher than 60%
             //(platform management)
@@ -61,16 +83,7 @@ public class GAME_SCREEN extends ScreenAdapter {
                 //if yes delete it & add new platform to the top
 
 
-        for (int i = 0; i < platforms.size(); i++)
-        {
 
-        }
-        //(check if player is touching and boost)
-        //get old posY before act
-        //loop through platforms
-            //check if it's y is in player range
-                //if yes check if platform x is touching player
-                    //if yes boost player buy platform power
 
 
 
