@@ -2,10 +2,12 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -21,24 +23,34 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     private PLAYER player;
     private LinkedList<PLATFORM> platforms;
+
+    private Image background;
     private int score;
+    private Label scoreLabel;
 
     GAME_SCREEN(MD_GAME game, String player_image_source)
     {
         this.game = game;
         this.player_image_source = player_image_source;
+
+        platforms = new LinkedList<>();
     }
 
     @Override
     public void show() {
+        Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        platforms = new LinkedList<>();
-        //cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //cam.setToOrtho(false);
+
+        background = new Image(new Texture("media/mario-sky-background.png"));
+        background.setZIndex(0);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(background);
+
         player = new PLAYER(player_image_source);
         stage.addActor(player);
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
 
         //generate start platform
         for (int i = 20; i < Gdx.graphics.getHeight(); ) {
@@ -46,8 +58,14 @@ public class GAME_SCREEN extends ScreenAdapter {
             platforms.addLast(newPlatform);
             stage.addActor(newPlatform);
             i += newPlatform.getHeight();
-            i += newPlatform.getPower() * 50;
+            i += newPlatform.getPower() * 70;
         }
+
+        scoreLabel = new Label("Score: " + score, skin);
+        scoreLabel.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50);
+        scoreLabel.setColor(Color.BLACK);
+        //scoreLabel.setColor(0, 0, 0, 0);
+        stage.addActor(scoreLabel);
     }
 
     public void update(float delta)
@@ -56,9 +74,9 @@ public class GAME_SCREEN extends ScreenAdapter {
         float posYold = player.getY();
         player.moveY(delta);
         managePlatforms(posYold);
-        System.out.println("Player X: " + player.getY());
         checkCollision(posYold);
 
+        scoreLabel.setText("Score: " + score);
         if(player.getY() <= 0)
         {
             game.setScreen(new END_SCREEN(game, player_image_source));

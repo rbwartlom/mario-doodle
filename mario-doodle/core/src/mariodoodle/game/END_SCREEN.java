@@ -2,12 +2,11 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -22,6 +21,8 @@ public class END_SCREEN extends ScreenAdapter {
     private TextButton playAgainButton;
     private TextButton menuButton;
 
+    private Image background;
+
     END_SCREEN(MD_GAME game, String player_image_source)
     {
         this.game = game;
@@ -33,16 +34,22 @@ public class END_SCREEN extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        background = new Image(new Texture("media/mario-background.png"));
+        background.setZIndex(0);
+        stage.addActor(background);
 
         this.container = buildContainer();
-
+        stage.addActor(container);
     }
 
     private Table buildContainer()
     {
         Table container = new Table();
         container.setFillParent(true);
-        container.add(new Label("GAME OVER", skin));
+        Label gameOverText = new Label("GAME OVER", skin);
+        gameOverText.setFontScale(2);
+        gameOverText.setColor(Color.RED);
+        container.add(gameOverText).padBottom(200);
         container.row();
 
         playAgainButton = new TextButton("PLAY AGAIN", skin);
@@ -70,7 +77,6 @@ public class END_SCREEN extends ScreenAdapter {
     public void render(float delta) {
         update(delta);
         ScreenUtils.clear(0, 0, 0, 0);
-        stage.addActor(container);
         stage.draw();
     }
     public void update (float delta)

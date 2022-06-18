@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import javax.swing.text.LabelView;
 
 
 public class TITLE_SCREEN extends ScreenAdapter{
@@ -26,6 +25,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
     private ImageButton luigiButton;
     private String marioImageSource;
     private String luigiImageSource;
+    private Image background;
 
     TITLE_SCREEN(MD_GAME game)
     {
@@ -38,11 +38,18 @@ public class TITLE_SCREEN extends ScreenAdapter{
         luigiImageSource = "media/luigi.png";
         marioImageSource = "media/mario.png";
         playerImageSource = marioImageSource;
+
+
     }
 
     public void show()
     {
+
         Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
+        background = new Image(new Texture("media/mario-background.png"));
+        background.setZIndex(0);
+        stage.addActor(background);
+
 
         //adding the start button
         startButton = new TextButton("Start", skin );
@@ -86,6 +93,8 @@ public class TITLE_SCREEN extends ScreenAdapter{
         container.add(marioButton);
 
         container.setFillParent(true); //centers the button(s)
+
+
     }
 
     public void render(float delta) {
