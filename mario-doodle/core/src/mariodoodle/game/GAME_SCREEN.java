@@ -79,7 +79,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         scoreLabel.setText("Score: " + score);
         if(player.getY() <= 0)
         {
-            game.setScreen(new END_SCREEN(game, player_image_source));
+            game.setScreen(new END_SCREEN(game, player_image_source, score));
         }
 
 
@@ -96,7 +96,6 @@ public class GAME_SCREEN extends ScreenAdapter {
             float platformY = currentPlatform.getY() + currentPlatform.getHeight();
             if(platformY >= posYnew && platformY <= posYold)
             {
-                System.out.println("touching");
                 //if player bounds and platform bounds are touching
                 if(player.getBounds().overlaps(currentPlatform.getBounds()))
                 {

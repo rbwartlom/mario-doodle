@@ -59,7 +59,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	label-pp-black: {
 		name: label-pp
 		color: black
-	}
+	},
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {

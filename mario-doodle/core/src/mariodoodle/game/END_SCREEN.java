@@ -23,10 +23,13 @@ public class END_SCREEN extends ScreenAdapter {
 
     private Image background;
 
-    END_SCREEN(MD_GAME game, String player_image_source)
+    private int past_score;
+
+    END_SCREEN(MD_GAME game, String player_image_source, int past_score)
     {
         this.game = game;
         this.player_image_source = player_image_source;
+        this.past_score = past_score;
     }
 
     public void show()
@@ -45,34 +48,53 @@ public class END_SCREEN extends ScreenAdapter {
     private Table buildContainer()
     {
         Table container = new Table();
+        Table buttonStyleContainer = new Table(skin);
         container.setFillParent(true);
         Label gameOverText = new Label("GAME OVER", skin);
-        gameOverText.setFontScale(2);
+        gameOverText.setFontScale(3);
         gameOverText.setColor(Color.RED);
-        container.add(gameOverText).padBottom(200);
+        container.add(gameOverText);
+        container.row();
+        container.add(new Label("Score: " + past_score, skin)).padBottom(150);
         container.row();
 
-        playAgainButton = new TextButton("PLAY AGAIN", skin);
-        playAgainButton.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y)
-            {
-                game.setScreen(new GAME_SCREEN(game, player_image_source));
-            }
-        });
+        container.add(buildButton("PLAY AGAIN")).fillX();
 
-        menuButton = new TextButton("MENU", skin);
-        menuButton.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y)
-            {
-                game.setScreen(new TITLE_SCREEN(game));
-            }
-        });
-
-        container.add(playAgainButton);
         container.row();
-        container.add(menuButton).padTop(10);
+
+        container.add(buildButton("MENU")).fillX();
+        
+
+
         return container;
     }
+
+    private Table buildButton(final String buttonText)
+    {
+        menuButton = new TextButton(buttonText, skin);
+        if(buttonText == "MENU") {
+            menuButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+
+                    game.setScreen(new TITLE_SCREEN(game));
+                }
+            });
+
+            }
+        else {
+            menuButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+
+                    game.setScreen(new GAME_SCREEN(game, player_image_source));
+                }
+            });
+        }
+        Table buttonStyleContainer = new Table(skin);
+        buttonStyleContainer.add(menuButton).expandX().fillX();;
+        buttonStyleContainer.setBackground("window-c");
+        return buttonStyleContainer;
+    }
+    
 
     public void render(float delta) {
         update(delta);

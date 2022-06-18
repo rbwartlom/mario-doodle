@@ -33,7 +33,6 @@ public class PLAYER extends Image {
             forceDown += delta*1000;
         }
         forceDown += delta*1200;
-        System.out.println("Player X: " + this.getY());
         this.setYPos(newY);
 
 
@@ -46,7 +45,6 @@ public class PLAYER extends Image {
 
     //called when player touches platform
     public void boost(int force) {
-        System.out.println("Boosted, forcedown: " + forceDown);
         this.forceDown = -900*force/boostCount;
         //boostCount += 0.01;
     }
@@ -61,10 +59,10 @@ public class PLAYER extends Image {
         bounds.setY(y);
     }
 
-    public void setXPos(float y)
+    public void setXPos(float x)
     {
-        this.setX(y);
-        bounds.setX(y);
+        this.setX(x);
+        bounds.setX(x);
     }
 
 

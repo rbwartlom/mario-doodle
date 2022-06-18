@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import sun.tools.jconsole.Tab;
 
 import javax.swing.text.LabelView;
 
@@ -27,13 +28,19 @@ public class TITLE_SCREEN extends ScreenAdapter{
     private String luigiImageSource;
     private Image background;
 
+    private Skin skin;
+
+    Table marioContainer;
+    Table luigiContainer;
+
+
     TITLE_SCREEN(MD_GAME game)
     {
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
-        container = new Table();
+        skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
+        container = new Table(skin);
 
         luigiImageSource = "media/luigi.png";
         marioImageSource = "media/mario.png";
@@ -44,8 +51,6 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
     public void show()
     {
-
-        Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
         background = new Image(new Texture("media/mario-background.png"));
         background.setZIndex(0);
         stage.addActor(background);
@@ -61,36 +66,52 @@ public class TITLE_SCREEN extends ScreenAdapter{
             }
         });
         startButton.setColor(new Color(11,11,11,11));
-        container.add(startButton).pad(10).colspan(2).fillX();
-        startButton.center();
+        final Table startContainer = new Table(skin);
+        startContainer.add(startButton).expandX().fillX();
+        startContainer.setBackground("window-c");
+        container.add(startContainer).pad(10).colspan(2).fillX();
         container.row();
+
+        marioContainer = new Table(skin);
+        luigiContainer = new Table(skin);
 
         //adding the mario button
         marioButton = new ImageButton(new TextureRegionDrawable(new Texture(marioImageSource)));
+        marioContainer.add(marioButton);
         marioButton.setChecked(true);
+        marioContainer.setBackground("window-player-c");
         marioButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
+
                 marioButton.setChecked(true);
                 luigiButton.setChecked(false);
                 playerImageSource = marioImageSource;
+                marioContainer.setBackground("window-player-c");
+                luigiContainer.setBackground("label-hp-black");
             }
         });
 
 
         //adding the luigi button
         luigiButton = new ImageButton(new TextureRegionDrawable(new Texture(luigiImageSource)));
-        luigiButton.setChecked(true);
+        luigiContainer.add(luigiButton);
+        luigiContainer.setBackground("label-pp-black");
         luigiButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
                 luigiButton.setChecked(true);
                 marioButton.setChecked(false);
                 playerImageSource = luigiImageSource;
+                luigiContainer.setBackground("window-player-c");
+                marioContainer.setBackground("label-hp-black");
             }
         });
-        container.add(luigiButton);
-        container.add(marioButton);
+
+
+
+        container.add(marioContainer).padRight(10);
+        container.add(luigiContainer).padLeft(10);
 
         container.setFillParent(true); //centers the button(s)
 
@@ -103,8 +124,17 @@ public class TITLE_SCREEN extends ScreenAdapter{
         stage.addActor(container);
         stage.draw();
     }
-    public void update (float delta)
+    private void update (float delta)
     {
+        if(luigiButton.isChecked())
+        {
+
+
+        }
+        else if (marioButton.isChecked())
+        {
+
+        }
 
     }
 
