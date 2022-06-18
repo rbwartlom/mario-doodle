@@ -2,6 +2,7 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 
 public class TITLE_SCREEN extends ScreenAdapter{
@@ -40,7 +42,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
     public void show()
     {
-        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
 
         //adding the start button
         startButton = new TextButton("Start", skin );
@@ -51,7 +53,8 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 game.setScreen(new GAME_SCREEN(game, playerImageSource));
             }
         });
-        container.add(startButton);
+        startButton.setColor(new Color(11,11,11,11));
+        container.add(startButton).pad(10).colspan(2).fillX();
         startButton.center();
         container.row();
 
@@ -66,7 +69,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 playerImageSource = marioImageSource;
             }
         });
-        container.add(marioButton);
+
 
         //adding the luigi button
         luigiButton = new ImageButton(new TextureRegionDrawable(new Texture(luigiImageSource)));
@@ -80,12 +83,13 @@ public class TITLE_SCREEN extends ScreenAdapter{
             }
         });
         container.add(luigiButton);
-
+        container.add(marioButton);
 
         container.setFillParent(true); //centers the button(s)
     }
 
     public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0, 0);
         update(delta);
         stage.addActor(container);
         stage.draw();
@@ -97,6 +101,12 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
     public void hide()
     {
+
+    }
+
+    public void dispose()
+    {
+        stage.clear();
         stage.dispose();
     }
 

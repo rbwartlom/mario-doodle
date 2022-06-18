@@ -11,6 +11,7 @@ public class PLATFORM extends Image {
 
     private final Texture texture = new Texture("media/mario.png");
     private int power;
+    private boolean touched;
 
     private Rectangle bounds;
 
@@ -20,7 +21,6 @@ public class PLATFORM extends Image {
 
         generate(posY);
 
-        bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
     }
 
     public void act(float delta)
@@ -35,7 +35,8 @@ public class PLATFORM extends Image {
         posX *= Gdx.graphics.getWidth();
         this.setX(posX);
 
-        this.power = rand.nextInt(1, 10);
+        this.power = rand.nextInt(1) + 1;
+        bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
     }
 
     public int getPower()
@@ -47,19 +48,25 @@ public class PLATFORM extends Image {
         return bounds;
     }
 
-    /*
-    public Texture getImage()
+    public void setXpos(float x)
     {
-        return image;
+        this.setX(x);
+        bounds.setX(x);
     }
-    public float getX()
+
+    public void setYpos(float y)
     {
-        return posX;
+        this.setY(y);
+        bounds.setY(y);
     }
-    public float getY()
+
+    public void setTouched(boolean touched)
     {
-        return posY;
+        this.touched = touched;
     }
-    */
+
+    public boolean wasTouched() {
+        return touched;
+    }
 
 }

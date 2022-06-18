@@ -2,6 +2,7 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,6 +16,7 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     private MD_GAME game;
     private Stage stage;
+    //private OrthographicCamera cam;
     private String player_image_source;
 
     private PLAYER player;
@@ -24,74 +26,69 @@ public class GAME_SCREEN extends ScreenAdapter {
     GAME_SCREEN(MD_GAME game, String player_image_source)
     {
         this.game = game;
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
         this.player_image_source = player_image_source;
-        platforms = new LinkedList<PLATFORM>();
     }
 
     @Override
     public void show() {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        platforms = new LinkedList<>();
+        //cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //cam.setToOrtho(false);
         player = new PLAYER(player_image_source);
+        stage.addActor(player);
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         //generate start platform
-        for(int i = 20; i < Gdx.graphics.getHeight();) {
+        for (int i = 20; i < Gdx.graphics.getHeight(); ) {
             PLATFORM newPlatform = new PLATFORM(i);
-            platforms.add(newPlatform);
-
-            i+= newPlatform.getHeight();
-            i+= newPlatform.getPower()*10;
+            platforms.addLast(newPlatform);
+            stage.addActor(newPlatform);
+            i += newPlatform.getHeight();
+            i += newPlatform.getPower() * 50;
         }
-
-        int screenHeight = 0;
-
-
     }
 
     public void update(float delta)
     {
         player.setXPos(Gdx.input.getX() - player.getWidth()/2);
         float posYold = player.getY();
-        stage.act();
-
+        player.moveY(delta);
+        managePlatforms(posYold);
+        System.out.println("Player X: " + player.getY());
         checkCollision(posYold);
 
-
-        //(check if player is touching and boost)
-        //get old posY before act done
-        //loop through platforms done
-        //check if it's y is in player range
-        //if yes check if platform x is touching player
-        //if yes boost player buy platform power
-
-        //if player position is higher than 60%
-            //(platform management)
-            //move platforms down by player difference to 60% point
-            //check if any platform is lower than 20% (maybe also only lowest plat)
-                //if yes delete it & add new platform to the top
-
-        //detects if player reached bottom of screen
         if(player.getY() <= 0)
         {
-            game.setScreen(new END_SCREEN(game));
+            game.setScreen(new END_SCREEN(game, player_image_source));
         }
 
 
-        //move player from position of mouse
     }
 
-    public boolean checkCollision (float posYold)
+
+
+    private boolean checkCollision (float posYold)
     {
         float posYnew = player.getY();
         for (int i = 0; i < platforms.size(); i++)
         {
             PLATFORM currentPlatform = platforms.get(i);
-            float platformY = currentPlatform.getY();
+            float platformY = currentPlatform.getY() + currentPlatform.getHeight();
             if(platformY >= posYnew && platformY <= posYold)
             {
+                System.out.println("touching");
                 //if player bounds and platform bounds are touching
                 if(player.getBounds().overlaps(currentPlatform.getBounds()))
                 {
+                    int platformPower = currentPlatform.getPower();
+                    player.boost(platformPower);
+                    if(!currentPlatform.wasTouched())
+                    {
+                        score++;
+                        currentPlatform.setTouched(true);
+                    }
                     return true;
                 }
 
@@ -99,17 +96,40 @@ public class GAME_SCREEN extends ScreenAdapter {
         }
         return false;
     }
+
+    private void managePlatforms(float posYold)
+    {
+        float playerDelta = player.getY() - posYold;
+        if(player.getY() > Gdx.graphics.getHeight()*0.6 && playerDelta > 0)
+        {
+
+            for (int i = 0; i < platforms.size(); i++)
+            {
+                PLATFORM currentPlatform = platforms.get(i);
+                float newY = currentPlatform.getY() - playerDelta*2;
+                currentPlatform.setYpos(newY);
+            }
+            //if platform is too low remove it and add a new one on top
+            if(platforms.getFirst().getY() < 0)
+            {
+                platforms.getFirst().remove();
+                platforms.removeFirst();
+                PLATFORM lastPlatform = platforms.getLast();
+                float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50;
+                PLATFORM newPlat = new PLATFORM(newPlatY);
+                platforms.addLast(newPlat);
+            }
+
+        }
+    }
     public void render(float delta) {
         update(delta);
-
         ScreenUtils.clear(20, 0, 0, 1);
-
-        //fills stage
-        stage.addActor(player);
+        //cam.position.set(player.getX(), player.getY(), 0);
+        //cam.update();
         for (int i = 0; i < platforms.size(); i++)
         {
             stage.addActor(platforms.get(i));
-
         }
         stage.draw();
         /*
@@ -137,9 +157,9 @@ public class GAME_SCREEN extends ScreenAdapter {
 
 
     }
-    public void hide()
+    public void dispose()
     {
-        //game.batch.dispose();
+        stage.clear();
         stage.dispose();
     }
 
