@@ -52,7 +52,6 @@ public class TITLE_SCREEN extends ScreenAdapter{
     public void show()
     {
         background = new Image(new Texture("media/mario-background.png"));
-        background.setZIndex(0);
         stage.addActor(background);
         ScreenUtils.clear(0, 0, 0, 0);
 

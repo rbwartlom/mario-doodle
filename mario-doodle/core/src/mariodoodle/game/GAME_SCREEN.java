@@ -34,7 +34,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         platforms = new LinkedList<>();
     }
 
-    //Artem
+    //Artem & Philipp
     @Override
     public void show() {
         Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
