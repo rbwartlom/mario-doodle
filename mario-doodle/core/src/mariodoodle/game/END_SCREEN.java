@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+//Philipp
 public class END_SCREEN extends ScreenAdapter {
 
     private MD_GAME game;
@@ -35,10 +36,10 @@ public class END_SCREEN extends ScreenAdapter {
     public void show()
     {
         skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
+        ScreenUtils.clear(0, 0, 0, 0);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         background = new Image(new Texture("media/mario-background.png"));
-        background.setZIndex(0);
         stage.addActor(background);
 
         this.container = buildContainer();
@@ -59,12 +60,8 @@ public class END_SCREEN extends ScreenAdapter {
         container.row();
 
         container.add(buildButton("PLAY AGAIN")).fillX();
-
         container.row();
-
         container.add(buildButton("MENU")).fillX();
-        
-
 
         return container;
     }
@@ -97,13 +94,7 @@ public class END_SCREEN extends ScreenAdapter {
     
 
     public void render(float delta) {
-        update(delta);
-        ScreenUtils.clear(0, 0, 0, 0);
         stage.draw();
-    }
-    public void update (float delta)
-    {
-
     }
 
     public void dispose()

@@ -5,12 +5,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+//Hendrik
 public class PLAYER extends Image {
-
-
-
     float forceDown;
-
     public Rectangle bounds;
     float boostCount;
 
@@ -29,14 +26,10 @@ public class PLAYER extends Image {
         float newY = this.getY() - forceDown*delta;
         if(this.getY() > Gdx.graphics.getHeight() - 100)
         {
-            //newY = Gdx.graphics.getHeight() - 20;
             forceDown += delta*1000;
         }
         forceDown += delta*1200;
         this.setYPos(newY);
-
-
-        //update the x value, calculate gravity
     }
 
     public Rectangle getBounds() {
@@ -46,11 +39,6 @@ public class PLAYER extends Image {
     //called when player touches platform
     public void boost(int force) {
         this.forceDown = -900*force/boostCount;
-        //boostCount += 0.01;
-    }
-
-    public void dispose() {
-
     }
 
     public void setYPos(float y)
@@ -64,12 +52,4 @@ public class PLAYER extends Image {
         this.setX(x);
         bounds.setX(x);
     }
-
-
-    //getter methods
-    /*
-    public Sprite getSprite() {
-        return sprite;
-    }
-    */
 }

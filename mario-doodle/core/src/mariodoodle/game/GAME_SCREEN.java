@@ -18,7 +18,6 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     private MD_GAME game;
     private Stage stage;
-    //private OrthographicCamera cam;
     private String player_image_source;
 
     private PLAYER player;
@@ -32,10 +31,10 @@ public class GAME_SCREEN extends ScreenAdapter {
     {
         this.game = game;
         this.player_image_source = player_image_source;
-
         platforms = new LinkedList<>();
     }
 
+    //Artem
     @Override
     public void show() {
         Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
@@ -43,7 +42,6 @@ public class GAME_SCREEN extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         background = new Image(new Texture("media/mario-sky-background.png"));
-        background.setZIndex(0);
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(background);
 
@@ -52,7 +50,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
 
-        //generate start platform
+        //generate start platforms
         for (int i = 20; i < Gdx.graphics.getHeight(); ) {
             PLATFORM newPlatform = new PLATFORM(i);
             platforms.addLast(newPlatform);
@@ -64,10 +62,21 @@ public class GAME_SCREEN extends ScreenAdapter {
         scoreLabel = new Label("Score: " + score, skin);
         scoreLabel.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50);
         scoreLabel.setColor(Color.BLACK);
-        //scoreLabel.setColor(0, 0, 0, 0);
         stage.addActor(scoreLabel);
     }
 
+    //Artem
+    public void render(float delta) {
+        update(delta);
+        ScreenUtils.clear(20, 0, 0, 1);
+        for (int i = 0; i < platforms.size(); i++)
+        {
+            stage.addActor(platforms.get(i));
+        }
+        stage.draw();
+    }
+
+    //Artem
     public void update(float delta)
     {
         player.setXPos(Gdx.input.getX() - player.getWidth()/2);
@@ -81,12 +90,10 @@ public class GAME_SCREEN extends ScreenAdapter {
         {
             game.setScreen(new END_SCREEN(game, player_image_source, score));
         }
-
-
     }
 
 
-
+    //Hendrik
     private boolean checkCollision (float posYold)
     {
         float posYnew = player.getY();
@@ -114,6 +121,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         return false;
     }
 
+    //Hendrik
     private void managePlatforms(float posYold)
     {
         float playerDelta = player.getY() - posYold;
@@ -139,41 +147,9 @@ public class GAME_SCREEN extends ScreenAdapter {
 
         }
     }
-    public void render(float delta) {
-        update(delta);
-        ScreenUtils.clear(20, 0, 0, 1);
-        //cam.position.set(player.getX(), player.getY(), 0);
-        //cam.update();
-        for (int i = 0; i < platforms.size(); i++)
-        {
-            stage.addActor(platforms.get(i));
-        }
-        stage.draw();
-        /*
-        game.batch.begin();
-
-        game.batch.draw(player.getSprite(), player.getX(), player.getY());
-        for (int i = 0; i < platforms.size(); i++)
-        {
-            PLATFORM currentPlatform = platforms.get(i);
-            game.batch.draw(currentPlatform.getImage(), currentPlatform.getX(), currentPlatform.getY());
-        }
-        game.batch.end();
-         */
-    }
 
 
-    //use: player.isTouching(platform)
-    public boolean isTouching(PLATFORM p)
-    {
-        return true;
-    }
-
-    public void end()
-    {
-
-
-    }
+    //Artem
     public void dispose()
     {
         stage.clear();

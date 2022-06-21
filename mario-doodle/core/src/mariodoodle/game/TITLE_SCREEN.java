@@ -10,11 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import sun.tools.jconsole.Tab;
 
-import javax.swing.text.LabelView;
-
-
+//Philipp
 public class TITLE_SCREEN extends ScreenAdapter{
     private MD_GAME game;
     private Table container;
@@ -49,11 +46,15 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
     }
 
+    /*
+    Wird beim erstellen aufgerufen
+     */
     public void show()
     {
         background = new Image(new Texture("media/mario-background.png"));
         background.setZIndex(0);
         stage.addActor(background);
+        ScreenUtils.clear(0, 0, 0, 0);
 
 
         //adding the start button
@@ -115,32 +116,11 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
         container.setFillParent(true); //centers the button(s)
 
-
+        stage.addActor(container);
     }
 
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 0);
-        update(delta);
-        stage.addActor(container);
         stage.draw();
-    }
-    private void update (float delta)
-    {
-        if(luigiButton.isChecked())
-        {
-
-
-        }
-        else if (marioButton.isChecked())
-        {
-
-        }
-
-    }
-
-    public void hide()
-    {
-
     }
 
     public void dispose()

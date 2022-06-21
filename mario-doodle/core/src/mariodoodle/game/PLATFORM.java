@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import java.util.Random;
 
+//Artem
 public class PLATFORM extends Image {
 
     private final Texture texture = new Texture("media/mario.png");
