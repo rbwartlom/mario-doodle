@@ -50,7 +50,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
 
-        //generate start platforms
+        //Hendrik
         for (int i = 20; i < Gdx.graphics.getHeight(); ) {
             PLATFORM newPlatform = new PLATFORM(i);
             platforms.addLast(newPlatform);
@@ -59,6 +59,8 @@ public class GAME_SCREEN extends ScreenAdapter {
             i += newPlatform.getPower() * 70;
         }
 
+
+        //Artem
         scoreLabel = new Label("Score: " + score, skin);
         scoreLabel.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50);
         scoreLabel.setColor(Color.BLACK);
@@ -97,9 +99,11 @@ public class GAME_SCREEN extends ScreenAdapter {
     private boolean checkCollision (float posYold)
     {
         float posYnew = player.getY();
+        //iterieren ueber platforms
         for (int i = 0; i < platforms.size(); i++)
         {
             PLATFORM currentPlatform = platforms.get(i);
+            //obere kante als Summe aus Unterkante und Hoehe
             float platformY = currentPlatform.getY() + currentPlatform.getHeight();
             if(platformY >= posYnew && platformY <= posYold)
             {
@@ -125,21 +129,23 @@ public class GAME_SCREEN extends ScreenAdapter {
     private void managePlatforms(float posYold)
     {
         float playerDelta = player.getY() - posYold;
+        //Hoehenueberschreitung 60% und Bewegung nach oben
         if(player.getY() > Gdx.graphics.getHeight()*0.6 && playerDelta > 0)
         {
 
             for (int i = 0; i < platforms.size(); i++)
             {
                 PLATFORM currentPlatform = platforms.get(i);
-                float newY = currentPlatform.getY() - playerDelta*2;
+                float newY = currentPlatform.getY() - playerDelta*1; //Geschwindigkeit Verschiebung
                 currentPlatform.setYpos(newY);
             }
             //if platform is too low remove it and add a new one on top
             if(platforms.getFirst().getY() < 0)
             {
-                platforms.getFirst().remove();
-                platforms.removeFirst();
+                platforms.getFirst().remove(); //entfernt von Stage
+                platforms.removeFirst(); //entfernt aus LinkedList platforms
                 PLATFORM lastPlatform = platforms.getLast();
+                //abstand der Plattformen
                 float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50;
                 PLATFORM newPlat = new PLATFORM(newPlatY);
                 platforms.addLast(newPlat);

@@ -57,7 +57,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
 
 
         //adding the start button
-        startButton = new TextButton("Start", skin );
+        startButton = new TextButton("Start", skin);
         //looks for left click on button and then opens a new game screen
         startButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
@@ -65,8 +65,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 game.setScreen(new GAME_SCREEN(game, playerImageSource));
             }
         });
-        startButton.setColor(new Color(11,11,11,11));
-        final Table startContainer = new Table(skin);
+        Table startContainer = new Table(skin);
         startContainer.add(startButton).expandX().fillX();
         startContainer.setBackground("window-c");
         container.add(startContainer).pad(10).colspan(2).fillX();
@@ -92,11 +91,11 @@ public class TITLE_SCREEN extends ScreenAdapter{
             }
         });
 
-
         //adding the luigi button
         luigiButton = new ImageButton(new TextureRegionDrawable(new Texture(luigiImageSource)));
         luigiContainer.add(luigiButton);
         luigiContainer.setBackground("label-pp-black");
+
         luigiButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
@@ -107,7 +106,6 @@ public class TITLE_SCREEN extends ScreenAdapter{
                 marioContainer.setBackground("label-hp-black");
             }
         });
-
 
 
         container.add(marioContainer).padRight(10);

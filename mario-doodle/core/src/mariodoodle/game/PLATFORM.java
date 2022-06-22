@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import java.util.Random;
 
 //Artem
+//Hendrik alles mit bounds
 public class PLATFORM extends Image {
 
     private final Texture texture = new Texture("media/mario.png");
