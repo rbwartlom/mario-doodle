@@ -1,16 +1,15 @@
 package mariodoodle.game;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.AudioDevice;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.LinkedList;
 
@@ -26,12 +25,19 @@ public class GAME_SCREEN extends ScreenAdapter {
     private Image background;
     private int score;
     private Label scoreLabel;
+    private Music marioMusic;
+    //private AudioDevice audio;
 
     GAME_SCREEN(MD_GAME game, String player_image_source)
     {
         this.game = game;
         this.player_image_source = player_image_source;
         platforms = new LinkedList<>();
+
+        marioMusic = Gdx.audio.newMusic(Gdx.files.internal("mariomusic.mp3"));
+        marioMusic.setLooping(true);
+        marioMusic.play();
+        //audio = Gdx.audio.newAudioDevice(100, false);
     }
 
     //Artem & Philipp
@@ -50,17 +56,18 @@ public class GAME_SCREEN extends ScreenAdapter {
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
 
-        //Hendrik
-        for (int i = 20; i < Gdx.graphics.getHeight(); ) {
+        //generate start platforms
+        PLATFORM firstPlatform = new PLATFORM(Gdx.input.getY(), 80);
+        platforms.addLast(firstPlatform);
+        for (int i = 180; i < Gdx.graphics.getHeight() - 160; ) {
             PLATFORM newPlatform = new PLATFORM(i);
             platforms.addLast(newPlatform);
             stage.addActor(newPlatform);
             i += newPlatform.getHeight();
-            i += newPlatform.getPower() * 70;
+            i += 100;
+            i += newPlatform.getPower() * 50;
         }
 
-
-        //Artem
         scoreLabel = new Label("Score: " + score, skin);
         scoreLabel.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50);
         scoreLabel.setColor(Color.BLACK);
@@ -99,11 +106,9 @@ public class GAME_SCREEN extends ScreenAdapter {
     private boolean checkCollision (float posYold)
     {
         float posYnew = player.getY();
-        //iterieren ueber platforms
         for (int i = 0; i < platforms.size(); i++)
         {
             PLATFORM currentPlatform = platforms.get(i);
-            //obere kante als Summe aus Unterkante und Hoehe
             float platformY = currentPlatform.getY() + currentPlatform.getHeight();
             if(platformY >= posYnew && platformY <= posYold)
             {
@@ -129,24 +134,22 @@ public class GAME_SCREEN extends ScreenAdapter {
     private void managePlatforms(float posYold)
     {
         float playerDelta = player.getY() - posYold;
-        //Hoehenueberschreitung 60% und Bewegung nach oben
-        if(player.getY() > Gdx.graphics.getHeight()*0.6 && playerDelta > 0)
+        if(playerDelta > 0)
         {
 
             for (int i = 0; i < platforms.size(); i++)
             {
                 PLATFORM currentPlatform = platforms.get(i);
-                float newY = currentPlatform.getY() - playerDelta*1; //Geschwindigkeit Verschiebung
+                float newY = currentPlatform.getY() - playerDelta*1;
                 currentPlatform.setYpos(newY);
             }
             //if platform is too low remove it and add a new one on top
-            if(platforms.getFirst().getY() < 0)
+            if(platforms.getFirst().getY()+ platforms.getFirst().getHeight() < 0)
             {
-                platforms.getFirst().remove(); //entfernt von Stage
-                platforms.removeFirst(); //entfernt aus LinkedList platforms
+                platforms.getFirst().remove();
+                platforms.removeFirst();
                 PLATFORM lastPlatform = platforms.getLast();
-                //abstand der Plattformen
-                float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50;
+                float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50 + 100;
                 PLATFORM newPlat = new PLATFORM(newPlatY);
                 platforms.addLast(newPlat);
             }

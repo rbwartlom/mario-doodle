@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import java.util.Random;
 
 //Artem
-//Hendrik alles mit bounds
 public class PLATFORM extends Image {
 
     private final Texture texture = new Texture("media/mario.png");
@@ -20,23 +19,28 @@ public class PLATFORM extends Image {
     PLATFORM(float posY)
     {
         super(new Texture("media/mushroom.png"));
+        Random rand = new Random();
+        float posX = rand.nextFloat();
+        posX *= Gdx.graphics.getWidth() - this.getWidth();
 
-        generate(posY);
+        generate(posY, posX);
 
+    }
+
+    PLATFORM(float posY, float posX)
+    {
+        generate(posY, posX);
     }
 
     public void act(float delta)
     {
     }
-    public void generate(float posY)
+    public void generate(float posY, float posX)
     {
         this.setY(posY);
-
-        Random rand = new Random();
-        float posX = rand.nextFloat();
-        posX *= Gdx.graphics.getWidth();
         this.setX(posX);
 
+        Random rand = new Random();
         this.power = rand.nextInt(1) + 1;
         bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
     }

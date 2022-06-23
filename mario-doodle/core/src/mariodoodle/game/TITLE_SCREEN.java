@@ -51,26 +51,26 @@ public class TITLE_SCREEN extends ScreenAdapter{
      */
     public void show()
     {
-        background = new Image(new Texture("media/mario-background.png"));
-        stage.addActor(background);
-        ScreenUtils.clear(0, 0, 0, 0);
+        ScreenUtils.clear(0, 0, 0, 0);//Entfernt alle vorherigen Objekte
+        background = new Image(new Texture("media/mario-background.png"));// Setzen des Hintergunds als Bild
+        stage.addActor(background);// Der Hintergund wird zur Stage hinzugefügt
 
-
-        //adding the start button
+        // Der Start Button wird erstellt welcher einen Text erhält
         startButton = new TextButton("Start", skin);
-        //looks for left click on button and then opens a new game screen
+
         startButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
                 game.setScreen(new GAME_SCREEN(game, playerImageSource));
             }
-        });
+        });// wenn der Startbutton geklickt wird wird auf den Spielbildschirm gewechselt
         Table startContainer = new Table(skin);
-        startContainer.add(startButton).expandX().fillX();
+        startContainer.add(startButton).expandX().fillX();// Der Startbutton wird formatiert
         startContainer.setBackground("window-c");
         container.add(startContainer).pad(10).colspan(2).fillX();
         container.row();
 
+        //container der beiden Knoepfe
         marioContainer = new Table(skin);
         luigiContainer = new Table(skin);
 
@@ -111,7 +111,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
         container.add(marioContainer).padRight(10);
         container.add(luigiContainer).padLeft(10);
 
-        container.setFillParent(true); //centers the button(s)
+        container.setFillParent(true); //zentriert container
 
         stage.addActor(container);
     }
