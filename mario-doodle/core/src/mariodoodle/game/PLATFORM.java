@@ -19,12 +19,12 @@ public class PLATFORM extends Image {
     PLATFORM(float posY)
     {
         super(new Texture("media/mushroom.png"));
+
+        //setzt eine zufaellige X-position
         Random rand = new Random();
-        float posX = rand.nextFloat();
-        posX *= Gdx.graphics.getWidth() - this.getWidth();
+        float posX = rand.nextFloat(Gdx.graphics.getWidth() - this.getWidth());
 
         generate(posY, posX);
-
     }
 
     PLATFORM(float posY, float posX)
@@ -32,9 +32,6 @@ public class PLATFORM extends Image {
         generate(posY, posX);
     }
 
-    public void act(float delta)
-    {
-    }
     public void generate(float posY, float posX)
     {
         this.setY(posY);
@@ -42,7 +39,34 @@ public class PLATFORM extends Image {
 
         Random rand = new Random();
         this.power = rand.nextInt(1) + 1;
+
         bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
+    }
+
+    //ersatz fuer setX
+    ////updated dazu noch die bounds, damit Objekte interagieren koennen
+    public void setXpos(float x)
+    {
+        this.setX(x);
+        bounds.setX(x);
+    }
+
+    //ersatz fuer setY
+    ////updated dazu noch die bounds, damit Objekte interagieren koennen
+    public void setYpos(float y)
+    {
+        this.setY(y);
+        bounds.setY(y);
+    }
+
+
+    public void setTouched(boolean touched)
+    {
+        this.touched = touched;
+    }
+
+    public boolean wasTouched() {
+        return touched;
     }
 
     public int getPower()
@@ -52,27 +76,6 @@ public class PLATFORM extends Image {
 
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    public void setXpos(float x)
-    {
-        this.setX(x);
-        bounds.setX(x);
-    }
-
-    public void setYpos(float y)
-    {
-        this.setY(y);
-        bounds.setY(y);
-    }
-
-    public void setTouched(boolean touched)
-    {
-        this.touched = touched;
-    }
-
-    public boolean wasTouched() {
-        return touched;
     }
 
 }

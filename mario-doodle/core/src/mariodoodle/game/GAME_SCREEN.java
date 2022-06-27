@@ -26,48 +26,56 @@ public class GAME_SCREEN extends ScreenAdapter {
     private int score;
     private Label scoreLabel;
     private Music marioMusic;
-    //private AudioDevice audio;
 
+    //game als durchlaufender Parameter, welcher das Spiel zusammenknuepft
+    //player_image_source von TITLE_SCREEN uebergeben (entweder Mario oder Luigi)
     GAME_SCREEN(MD_GAME game, String player_image_source)
     {
         this.game = game;
         this.player_image_source = player_image_source;
         platforms = new LinkedList<>();
 
-        marioMusic = Gdx.audio.newMusic(Gdx.files.internal("mariomusic.mp3"));
-        marioMusic.setLooping(true);
-        marioMusic.play();
-        //audio = Gdx.audio.newAudioDevice(100, false);
+
     }
 
-    //Artem & Philipp
+    //Artem
     @Override
     public void show() {
         Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        //initialisiert die Wiedergabe der Musik
+        marioMusic = Gdx.audio.newMusic(Gdx.files.internal("mariomusic.mp3"));
+        marioMusic.setLooping(true);
+        marioMusic.play();
+
+        //erstellt Hintergrund
         background = new Image(new Texture("media/mario-sky-background.png"));
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(background);
 
         player = new PLAYER(player_image_source);
         stage.addActor(player);
-        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
 
-        //generate start platforms
-        PLATFORM firstPlatform = new PLATFORM(Gdx.input.getY(), 80);
-        platforms.addLast(firstPlatform);
-        for (int i = 180; i < Gdx.graphics.getHeight() - 160; ) {
+        //generiert die Plattformen, die am Start auf dem Display sind
+        ////schaut dabei, dass erste PLATFORM unter dem Spieler ist
+        float startingHeight = player.getY() - 130;
+        for (float i = startingHeight; i < Gdx.graphics.getHeight() - 160; ) {
             PLATFORM newPlatform = new PLATFORM(i);
+            if(i == startingHeight)
+            {
+                newPlatform.setXpos(Gdx.input.getX());
+            }
             platforms.addLast(newPlatform);
             stage.addActor(newPlatform);
             i += newPlatform.getHeight();
-            i += 100;
+            i += 200;
             i += newPlatform.getPower() * 50;
         }
 
+        //erstellt einen Score-counter oben rechts
         scoreLabel = new Label("Score: " + score, skin);
         scoreLabel.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50);
         scoreLabel.setColor(Color.BLACK);
@@ -75,7 +83,9 @@ public class GAME_SCREEN extends ScreenAdapter {
     }
 
     //Artem
+    //render-funktion wird bei jedem Frame automatisch aufgerufen
     public void render(float delta) {
+        //aufteilung in update und render
         update(delta);
         ScreenUtils.clear(20, 0, 0, 1);
         for (int i = 0; i < platforms.size(); i++)
@@ -86,17 +96,22 @@ public class GAME_SCREEN extends ScreenAdapter {
     }
 
     //Artem
-    public void update(float delta)
+    private void update(float delta)
     {
         player.setXPos(Gdx.input.getX() - player.getWidth()/2);
-        float posYold = player.getY();
-        player.moveY(delta);
+        float posYold = player.getY(); //wichtig fuer die zwei unteren methoden
+
+        player.moveY(delta); //Berechnet und setzt schwerkraft beim Spieler
+
         managePlatforms(posYold);
         checkCollision(posYold);
 
         scoreLabel.setText("Score: " + score);
+
+        //bricht das Spiel ab
         if(player.getY() <= 0)
         {
+            marioMusic.dispose();
             game.setScreen(new END_SCREEN(game, player_image_source, score));
         }
     }
@@ -136,11 +151,10 @@ public class GAME_SCREEN extends ScreenAdapter {
         float playerDelta = player.getY() - posYold;
         if(playerDelta > 0)
         {
-
             for (int i = 0; i < platforms.size(); i++)
             {
                 PLATFORM currentPlatform = platforms.get(i);
-                float newY = currentPlatform.getY() - playerDelta*1;
+                float newY = currentPlatform.getY() - playerDelta*1.7F;
                 currentPlatform.setYpos(newY);
             }
             //if platform is too low remove it and add a new one on top
@@ -149,7 +163,7 @@ public class GAME_SCREEN extends ScreenAdapter {
                 platforms.getFirst().remove();
                 platforms.removeFirst();
                 PLATFORM lastPlatform = platforms.getLast();
-                float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50 + 100;
+                float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50 + 200;
                 PLATFORM newPlat = new PLATFORM(newPlatY);
                 platforms.addLast(newPlat);
             }
@@ -163,6 +177,7 @@ public class GAME_SCREEN extends ScreenAdapter {
     {
         stage.clear();
         stage.dispose();
+
     }
 
 }

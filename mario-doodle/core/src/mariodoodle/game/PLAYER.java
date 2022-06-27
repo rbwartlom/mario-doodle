@@ -19,7 +19,7 @@ public class PLAYER extends Image {
         super(new Texture(imageSource));
 
         bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
-        this.setBounds(0, 400, this.getWidth(), this.getHeight());
+        this.setYPos(200);
         forceDown = 1;
         boostCount = 1;
     }
@@ -42,7 +42,7 @@ public class PLAYER extends Image {
 
     //called when player touches platform
     public void boost(int force) {
-        this.forceDown = -900*force/boostCount;
+        this.forceDown = -800*force/boostCount;
     }
 
     public void setYPos(float y)
