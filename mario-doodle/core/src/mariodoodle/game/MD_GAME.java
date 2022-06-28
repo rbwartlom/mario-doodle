@@ -6,9 +6,9 @@ import com.badlogic.gdx.Game;
 Startet das Spiel durch erstellen eines neuen Game Screens
  */
 
-//Artem
 public class MD_GAME extends Game {
 
+	//setzt das Standardenster auf das Menuefenster
 	public void create()
 	{
 		setScreen(new TITLE_SCREEN(this));

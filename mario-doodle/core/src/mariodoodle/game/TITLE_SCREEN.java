@@ -2,7 +2,6 @@ package mariodoodle.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-//Philipp
 public class TITLE_SCREEN extends ScreenAdapter{
     private MD_GAME game;
     private Table container;
@@ -43,12 +41,9 @@ public class TITLE_SCREEN extends ScreenAdapter{
         marioImageSource = "media/mario.png";
         playerImageSource = marioImageSource;
 
-
     }
 
-    /*
-    Wird beim erstellen aufgerufen
-     */
+    //wird bei erstellen des Fensters aufgerufen
     public void show()
     {
         ScreenUtils.clear(0, 0, 0, 0);//Entfernt alle vorherigen Objekte
@@ -61,6 +56,7 @@ public class TITLE_SCREEN extends ScreenAdapter{
         startButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
+                //setzt das Fenster auf das Hauptfenster
                 game.setScreen(new GAME_SCREEN(game, playerImageSource));
             }
         });// wenn der Startbutton geklickt wird wird auf den Spielbildschirm gewechselt
@@ -74,33 +70,28 @@ public class TITLE_SCREEN extends ScreenAdapter{
         marioContainer = new Table(skin);
         luigiContainer = new Table(skin);
 
-        //adding the mario button
+        //erstellt mario-knopf
         marioButton = new ImageButton(new TextureRegionDrawable(new Texture(marioImageSource)));
         marioContainer.add(marioButton);
-        marioButton.setChecked(true);
-        marioContainer.setBackground("window-player-c");
+        marioContainer.setBackground("window-player-c"); //setzt den Hintergrund standardmaessig auf den Rahmen
         marioButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
-
-                marioButton.setChecked(true);
-                luigiButton.setChecked(false);
+                //setzt mario als ausgewaehlt
                 playerImageSource = marioImageSource;
                 marioContainer.setBackground("window-player-c");
                 luigiContainer.setBackground("label-hp-black");
             }
         });
 
-        //adding the luigi button
+        //erstellt luigi-knopf
         luigiButton = new ImageButton(new TextureRegionDrawable(new Texture(luigiImageSource)));
         luigiContainer.add(luigiButton);
-        luigiContainer.setBackground("label-pp-black");
-
+        luigiContainer.setBackground("label-hp-black"); //setzt den Hintergrund standardmaessig auf den Schatten
         luigiButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y)
             {
-                luigiButton.setChecked(true);
-                marioButton.setChecked(false);
+                //setzt luigi als ausgewaehlt
                 playerImageSource = luigiImageSource;
                 luigiContainer.setBackground("window-player-c");
                 marioContainer.setBackground("label-hp-black");

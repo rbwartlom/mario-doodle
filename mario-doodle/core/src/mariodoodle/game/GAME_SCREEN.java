@@ -1,9 +1,7 @@
 package mariodoodle.game;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +12,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.LinkedList;
 
 public class GAME_SCREEN extends ScreenAdapter {
-
     private MD_GAME game;
     private Stage stage;
     private String player_image_source;
@@ -38,9 +35,10 @@ public class GAME_SCREEN extends ScreenAdapter {
 
     }
 
-    //Artem
+    //wird beim erstellen des Fensters aufgerufen
     @Override
     public void show() {
+
         Skin skin = new Skin(Gdx.files.internal("data/skin/terra-mother-ui.json"));
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -82,12 +80,11 @@ public class GAME_SCREEN extends ScreenAdapter {
         stage.addActor(scoreLabel);
     }
 
-    //Artem
     //render-funktion wird bei jedem Frame automatisch aufgerufen
     public void render(float delta) {
         //aufteilung in update und render
         update(delta);
-        ScreenUtils.clear(20, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         for (int i = 0; i < platforms.size(); i++)
         {
             stage.addActor(platforms.get(i));
@@ -95,7 +92,8 @@ public class GAME_SCREEN extends ScreenAdapter {
         stage.draw();
     }
 
-    //Artem
+    //Kuemmert sich um die Anpassung der Werte
+    //delta ist die Zeit, die seit dem letzten Frame vergangen ist
     private void update(float delta)
     {
         player.setXPos(Gdx.input.getX() - player.getWidth()/2);
@@ -112,12 +110,14 @@ public class GAME_SCREEN extends ScreenAdapter {
         if(player.getY() <= 0)
         {
             marioMusic.dispose();
+            //setzt das Fenster auf das Endfenster
             game.setScreen(new END_SCREEN(game, player_image_source, score));
         }
     }
 
 
-    //Hendrik
+    //Schaut, ob Spieler einen der Plattformen/Pilze beruehrt
+    //posYold aus update()
     private boolean checkCollision (float posYold)
     {
         float posYnew = player.getY();
@@ -125,13 +125,16 @@ public class GAME_SCREEN extends ScreenAdapter {
         {
             PLATFORM currentPlatform = platforms.get(i);
             float platformY = currentPlatform.getY() + currentPlatform.getHeight();
+            //schaut ob sich zwischen neuem und altem Y des Spielers eine Plattform befindet
+            //stellt sicher, dass die Pilze von unten den Spieler nicht abstossen
             if(platformY >= posYnew && platformY <= posYold)
             {
-                //if player bounds and platform bounds are touching
                 if(player.getBounds().overlaps(currentPlatform.getBounds()))
                 {
                     int platformPower = currentPlatform.getPower();
                     player.boost(platformPower);
+
+                    //kuemmert sich um den Score
                     if(!currentPlatform.wasTouched())
                     {
                         score++;
@@ -145,23 +148,26 @@ public class GAME_SCREEN extends ScreenAdapter {
         return false;
     }
 
-    //Hendrik
+    //Verschiebt die Plattformen/Pilze
+    //posYold aus update()
     private void managePlatforms(float posYold)
     {
         float playerDelta = player.getY() - posYold;
         if(playerDelta > 0)
         {
+            //verschiebt alle Plattformen nach unten, 1.7 ist dabei die Geschwindigkeit, wie schnell diese sich bewegen
             for (int i = 0; i < platforms.size(); i++)
             {
                 PLATFORM currentPlatform = platforms.get(i);
                 float newY = currentPlatform.getY() - playerDelta*1.7F;
                 currentPlatform.setYpos(newY);
             }
-            //if platform is too low remove it and add a new one on top
-            if(platforms.getFirst().getY()+ platforms.getFirst().getHeight() < 0)
+            //wenn Plattform zu niedrig ist, dann wird sie entfernt und es wird oben eine hinzugefuegt
+            PLATFORM firstPlatform = platforms.getFirst();
+            if(firstPlatform.getY() + firstPlatform.getHeight() < 0)
             {
-                platforms.getFirst().remove();
-                platforms.removeFirst();
+                firstPlatform.remove(); //entfernt aus der Stage
+                platforms.removeFirst(); //entfernt aus der Liste der Plattformen
                 PLATFORM lastPlatform = platforms.getLast();
                 float newPlatY = lastPlatform.getY() + lastPlatform.getHeight() + lastPlatform.getPower()*50 + 200;
                 PLATFORM newPlat = new PLATFORM(newPlatY);
@@ -171,8 +177,7 @@ public class GAME_SCREEN extends ScreenAdapter {
         }
     }
 
-
-    //Artem
+    //wird bei schliessen aufgerufen
     public void dispose()
     {
         stage.clear();

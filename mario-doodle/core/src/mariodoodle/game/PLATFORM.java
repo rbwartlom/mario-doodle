@@ -3,14 +3,11 @@ package mariodoodle.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import java.util.Random;
 
-//Artem
 public class PLATFORM extends Image {
 
-    private final Texture texture = new Texture("media/mario.png");
     private int power;
     private boolean touched;
 
@@ -18,6 +15,7 @@ public class PLATFORM extends Image {
 
     PLATFORM(float posY)
     {
+        //setzt die Textur fuer Image
         super(new Texture("media/mushroom.png"));
 
         //setzt eine zufaellige X-position
@@ -27,18 +25,15 @@ public class PLATFORM extends Image {
         generate(posY, posX);
     }
 
-    PLATFORM(float posY, float posX)
-    {
-        generate(posY, posX);
-    }
-
-    public void generate(float posY, float posX)
+    //generiert eine Plattform mit Koordinaten posX, posY
+    public void generate(float posX, float posY)
     {
         this.setY(posY);
         this.setX(posX);
 
+        //setzt die Kraft auf eine Zahl von 1-3
         Random rand = new Random();
-        this.power = rand.nextInt(1) + 1;
+        this.power = rand.nextInt(2) + 1;
 
         bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
     }
@@ -59,21 +54,24 @@ public class PLATFORM extends Image {
         bounds.setY(y);
     }
 
-
+    //setter-methode
     public void setTouched(boolean touched)
     {
         this.touched = touched;
     }
 
+    //getter-methode
     public boolean wasTouched() {
         return touched;
     }
 
+    //getter-methode
     public int getPower()
     {
         return power;
     }
 
+    //getter-methode
     public Rectangle getBounds() {
         return bounds;
     }
