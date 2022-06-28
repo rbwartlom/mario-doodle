@@ -22,7 +22,7 @@ public class PLATFORM extends Image {
         Random rand = new Random();
         float posX = rand.nextFloat(Gdx.graphics.getWidth() - this.getWidth());
 
-        generate(posY, posX);
+        generate(posX, posY);
     }
 
     //generiert eine Plattform mit Koordinaten posX, posY
@@ -31,9 +31,9 @@ public class PLATFORM extends Image {
         this.setY(posY);
         this.setX(posX);
 
-        //setzt die Kraft auf eine Zahl von 1-3
+        //setzt die Kraft auf eine Zahl von 1-2
         Random rand = new Random();
-        this.power = rand.nextInt(2) + 1;
+        this.power = rand.nextInt(1) + 1;
 
         bounds = new Rectangle((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
     }

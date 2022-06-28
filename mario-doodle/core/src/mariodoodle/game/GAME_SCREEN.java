@@ -31,8 +31,6 @@ public class GAME_SCREEN extends ScreenAdapter {
         this.game = game;
         this.player_image_source = player_image_source;
         platforms = new LinkedList<>();
-
-
     }
 
     //wird beim erstellen des Fensters aufgerufen
